@@ -1,0 +1,54 @@
+.hidden {
+    opacity: 0 !important;
+    display:none;
+}
+
+.circle {
+    border-radius: 50%;
+    opacity: 2%;
+    position: absolute;
+    transition: all .5s;
+    border: 1px solid lightgray;
+}
+
+.circle:hover {
+    opacity: 100% !important;
+}
+
+.moon {
+    background-color: lightgray;
+}
+
+.planet {
+    background-color: skyblue;
+}
+
+
+.dwarf-planet {
+    background-color: beige;
+}
+
+.asteroid {
+    background-color: darkgray;
+}
+
+.comet {
+    background-color: lightblue;
+}
+
+.sun {
+    border-radius: 50%;
+    position: absolute;
+    transition: all .5s;
+    width: 50px;
+    height: 50px;
+    background-color: yellow;
+    box-shadow: 0 0 20px 0 rgba(255, 255, 0, 0.658);
+}
+
+.earth {
+    background-color: transparent;
+    border: none;
+    opacity: 100%;
+    box-shadow: 0 0 100px 0 rgba(0, 214, 252, 0.658);
+}
