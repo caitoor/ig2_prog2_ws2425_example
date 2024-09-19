@@ -7,6 +7,7 @@ function init() {
     defaults.sun = document.querySelector('.sun');
     defaults.description = document.querySelector('.description');
 
+
     createCircles();
 }
 
@@ -27,12 +28,16 @@ function createCircles() {
         div.setAttribute('data-name', body.englishName);
         defaults.main.appendChild(div);
 
+        div.addEventListener('mousemove', (event) => {
+            defaults.mouseX = event.pageX;
+            defaults.mouseY = event.pageY;
+            defaults.description.style.left = `${defaults.mouseX + 10}px`;
+            defaults.description.style.top = `${defaults.mouseY - 10}px`;
+        });
+
         div.addEventListener('mouseover', () => {
             defaults.description.textContent = body.englishName;
             defaults.description.classList.remove('hidden');
-            const rect = div.getBoundingClientRect();
-            defaults.description.style.left = `${rect.left + rect.width / 2}px`;
-            defaults.description.style.top = `${rect.top - rect.height}px`;
         });
 
         div.addEventListener('mouseout', () => {
