@@ -1,6 +1,17 @@
+:root {
+    --color-earth: rgba(0, 214, 252, 0.66);
+    --color-sun: rgba(255, 217, 0);
+    --color-asteroid: #f8a69d;
+    --color-comet: #fcfeff;
+    --color-dwarf-planet: beige;
+    --color-moon: #bdc3c7;
+    --color-planet: #87cfeb3a;
+
+}
+
 .hidden {
     opacity: 0 !important;
-    display:none;
+    display: none;
 }
 
 .circle {
@@ -8,7 +19,9 @@
     opacity: 2%;
     position: absolute;
     transition: all .5s;
+    transition: border-radius 0;
     border: 1px solid lightgray;
+    cursor: pointer;
 }
 
 .circle:hover {
@@ -16,24 +29,25 @@
 }
 
 .moon {
-    background-color: lightgray;
+    background-color: var(--color-moon);
 }
 
 .planet {
-    background-color: skyblue;
+    background-color: var(--color-planet);
+    opacity: 50%;
+    border: 1px solid skyblue;
 }
 
-
 .dwarf-planet {
-    background-color: beige;
+    background-color: var(--color-dwarf-planet);
 }
 
 .asteroid {
-    background-color: darkgray;
+    background-color: var(--color-asteroid);
 }
 
 .comet {
-    background-color: lightblue;
+    background-color: var(--color-comet);
 }
 
 .sun {
@@ -42,13 +56,14 @@
     transition: all .5s;
     width: 50px;
     height: 50px;
-    background-color: yellow;
-    box-shadow: 0 0 20px 0 rgba(255, 255, 0, 0.658);
+    background-color: var(--color-sun);
+    box-shadow: 0 0 20px 0 var(--color-sun);
 }
 
 .earth {
-    background-color: transparent;
-    border: none;
-    opacity: 100%;
-    box-shadow: 0 0 100px 0 rgba(0, 214, 252, 0.658);
+    background-color: var(--color-earth);
+    box-shadow: 0 0 100px 0;
+    border-color: var(--color-earth);
+    box-shadow: 0 0 40px 0 var(--color-earth);
+
 }

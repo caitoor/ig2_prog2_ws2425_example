@@ -6,7 +6,8 @@ function init() {
     defaults.mainHeight = defaults.main.clientHeight;
     defaults.sun = document.querySelector('.sun');
     defaults.description = document.querySelector('.description');
-
+    defaults.earthScale = defaults.mainHeight / (6371);
+    defaults.currentView = 'concentric';
 
     createCircles();
 }
@@ -44,16 +45,34 @@ function createCircles() {
             const description = document.querySelector('.description');
             description.classList.add('hidden');
         });
+
+        div.addEventListener('click', function () {
+            switch (defaults.currentView) {
+                case 'concentric':
+                    const scaleFactor = defaults.mainHeight / parseFloat(this.getAttribute('data-meanRadius'));
+                    concentricBodies(scaleFactor);
+                    break;
+                case 'positioned':
+                    positionedBodies();
+                    break;
+            }
+        });
+
+        // initial view of concentric bodies with earth scaled to viewport size:
+        concentricBodies();
     });
 }
 
-function concentricBodies() {
+function concentricBodies(scaleFactor = defaults.earthScale) {
+    scaleFactor *= .9;
     changeNavHighlight(".first-item");
+    defaults.currentView = 'concentric';
     setCircleVisibility(false);
     setVisibility(defaults.sun, false);
-    const shownCircles = document.querySelectorAll('.asteroid, .comet, .dwarf-planet, .moon, .earth');
-    const scaleFactor = defaults.mainHeight / (2 * maxCARadius);
-    shownCircles.forEach((body) => {
+
+    const allCircles = document.querySelectorAll('.circle');
+
+    allCircles.forEach((body) => {
         body.classList.remove('hidden');
         let meanRadius = parseFloat(body.getAttribute('data-meanRadius'));
         meanRadius = meanRadius < 1 ? 1 : meanRadius;
@@ -69,6 +88,7 @@ function concentricBodies() {
 
 function positionedBodies() {
     changeNavHighlight(".second-item");
+    defaults.currentView = 'positioned';
     setCircleVisibility(true);
     setVisibility(defaults.sun, true);
 
