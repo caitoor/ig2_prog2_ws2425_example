@@ -46,9 +46,13 @@ function map(value, inMin, inMax, outMin, outMax) {
 
 function logaritmicMap(value, inMin, inMax, outMin, outMax) {
     // map value from one range to another with a logaritmic scale
-    return Math.exp(map(Math.log(value), Math.log(inMin), Math.log(inMax), Math.log(outMin), Math.log(outMax)));
+    if (value > inMax) {
+        // linear interpolation beyond the maximum
+        return map(value, inMax, inMax * 2, outMax, outMax * 2);
+    } else {
+        return Math.exp(map(Math.log(value), Math.log(inMin), Math.log(inMax), Math.log(outMin), Math.log(outMax)));
+    }
 }
-
 
 // dom manipulation:
 function clearNavHighlight() {

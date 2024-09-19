@@ -58,6 +58,7 @@
     height: 50px;
     background-color: var(--color-sun);
     box-shadow: 0 0 20px 0 var(--color-sun);
+    cursor: pointer;
 }
 
 .earth {

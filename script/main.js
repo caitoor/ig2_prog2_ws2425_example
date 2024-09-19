@@ -11,6 +11,11 @@ function init() {
     defaults.currentView = 'concentric';
 
     createCircles();
+
+    defaults.sun.addEventListener('click', () => {
+        if (defaults.currentView === 'positioned') positionedBodies();
+    });
+
 }
 
 function createCircles() {
@@ -90,6 +95,8 @@ function concentricBodies(scaleFactor = defaults.earthScale) {
 }
 
 function positionedBodies(axisScaleFactor = defaults.plutoAxisScale) {
+    console.log(`showing positioned bodies with axisScaleFactor: ${axisScaleFactor}`);
+
     defaults.currentView = 'positioned';
     changeNavHighlight(".second-item");
     setCircleVisibility(true);
@@ -118,9 +125,9 @@ function positionedBodies(axisScaleFactor = defaults.plutoAxisScale) {
         // scaling
         const meanRadius = parseFloat(circle.getAttribute('data-meanRadius'));
         const size = logaritmicMap(clipValue(meanRadius, 1, meanRadius), 1, 69911, 5, 75);
-
-        circle.style.width = `${size}px`;
-        circle.style.height = `${size}px`;
+        const sizeModificationByZoom = clipValue(map(axisScaleFactor, 0, defaults.plutoAxisScale, .5, 1), .5, 1);
+        circle.style.width = `${size * sizeModificationByZoom}px`;
+        circle.style.height = `${size * sizeModificationByZoom}px`;
 
         // opacity
         circle.style.opacity = .5;
