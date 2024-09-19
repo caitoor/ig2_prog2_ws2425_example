@@ -6,7 +6,8 @@ function init() {
     defaults.mainHeight = defaults.main.clientHeight;
     defaults.sun = document.querySelector('.sun');
     defaults.description = document.querySelector('.description');
-    defaults.earthScale = defaults.mainHeight / (6371);
+    defaults.earthScale = defaults.mainHeight / 6371; // mean radius of earth
+    defaults.plutoAxisScale = defaults.mainHeight / (2 * 5906440628); // semimajor axis of pluto
     defaults.currentView = 'concentric';
 
     createCircles();
@@ -27,6 +28,7 @@ function createCircles() {
         div.setAttribute('data-semimajorAxis', body.semimajorAxis);
         div.setAttribute('data-meanRadius', body.meanRadius);
         div.setAttribute('data-name', body.englishName);
+        div.setAttribute('data-angle', Math.random() * 360);
         defaults.main.appendChild(div);
 
         div.addEventListener('mousemove', (event) => {
@@ -53,7 +55,8 @@ function createCircles() {
                     concentricBodies(scaleFactor);
                     break;
                 case 'positioned':
-                    positionedBodies();
+                    const axisScaleFactor = defaults.mainHeight / (2 * parseFloat(this.getAttribute('data-semimajorAxis')));
+                    positionedBodies(axisScaleFactor);
                     break;
             }
         });
@@ -70,9 +73,9 @@ function concentricBodies(scaleFactor = defaults.earthScale) {
     setCircleVisibility(false);
     setVisibility(defaults.sun, false);
 
-    const allCircles = document.querySelectorAll('.circle');
+    const circles = document.querySelectorAll('.circle');
 
-    allCircles.forEach((body) => {
+    circles.forEach((body) => {
         body.classList.remove('hidden');
         let meanRadius = parseFloat(body.getAttribute('data-meanRadius'));
         meanRadius = meanRadius < 1 ? 1 : meanRadius;
@@ -86,20 +89,21 @@ function concentricBodies(scaleFactor = defaults.earthScale) {
     });
 }
 
-function positionedBodies() {
-    changeNavHighlight(".second-item");
+function positionedBodies(axisScaleFactor = defaults.plutoAxisScale) {
     defaults.currentView = 'positioned';
+    changeNavHighlight(".second-item");
     setCircleVisibility(true);
     setVisibility(defaults.sun, true);
 
-    document.querySelectorAll('.moon, .planet').forEach(moon => moon.classList.add('hidden'));
-    const circles = document.querySelectorAll('.comet, .asteroid, .dwarf-planet');
+    axisScaleFactor *= .5;
+    document.querySelectorAll('.moon').forEach(moon => moon.classList.add('hidden'));
 
+    const circles = document.querySelectorAll('.circle');
     circles.forEach(circle => {
         // positioning
         const semimajorAxis = parseFloat(circle.getAttribute('data-semimajorAxis'));
-        const axisScaleFactor = defaults.mainHeight / (2 * biggestAxisOfSelection(circles));
-        const angle = Math.random() * 360;
+
+        const angle = circle.getAttribute('data-angle');
 
         let x = semimajorAxis * axisScaleFactor * Math.cos(angle * (Math.PI / 180));
         let y = semimajorAxis * axisScaleFactor * Math.sin(angle * (Math.PI / 180));
@@ -113,9 +117,8 @@ function positionedBodies() {
 
         // scaling
         const meanRadius = parseFloat(circle.getAttribute('data-meanRadius'));
-        const scaleFactor = defaults.mainHeight / (maxCARadius * 10);
-        let size = meanRadius * scaleFactor;
-        size = clipValue(size, 7, 30);
+        const size = logaritmicMap(clipValue(meanRadius, 1, meanRadius), 1, 69911, 5, 75);
+
         circle.style.width = `${size}px`;
         circle.style.height = `${size}px`;
 
