@@ -106,10 +106,10 @@ function positionedBodies(axisScaleFactor = defaults.plutoAxisScale) {
     document.querySelectorAll('.moon').forEach(moon => moon.classList.add('hidden'));
 
     const circles = document.querySelectorAll('.circle');
+
     circles.forEach(circle => {
         // positioning
         const semimajorAxis = parseFloat(circle.getAttribute('data-semimajorAxis'));
-
         const angle = circle.getAttribute('data-angle');
 
         let x = semimajorAxis * axisScaleFactor * Math.cos(angle * (Math.PI / 180));
